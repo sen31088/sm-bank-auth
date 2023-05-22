@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc-sm-bank-home
+  name: svc-sm-bank-auth
 spec:
   selector:
-    app: sm-bank-home
+    app: sm-bank-auth
   ports:
     - protocol: TCP
       port: 80

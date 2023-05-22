@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: sm-bank-auth
-          image: sen31088/sm-bank:{{theversion}}
+          image: sen31088/sm-bank-auth:{{theversion}}
           envFrom:
             - configMapRef:
                 name: sm-bank-config
