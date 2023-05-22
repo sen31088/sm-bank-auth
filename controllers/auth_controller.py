@@ -127,12 +127,15 @@ def api_verify_two_FA_login():
         username_in = session.get('name')
         otp_in = request.form['otp']
         otp_data_found = Userotp.find_otp(username_in)
+        logging.info(f"{otp_data_found} OTP data found")
         print("OTP data Found is: ", otp_data_found)
         otp_found = otp_data_found['otp']
+        logging.info(f"{otp_found} OTP found")
         print("OTP found is: ",otp_found )
         if otp_in == otp_found:
             Userotp.delete_data(username_in)
             session['otp_valid'] = True
+            logging.info(f"{home_url}OTP validated and home url is:")
             print("OTP validated and home url is: ", home_url)
             return redirect(home_url)
         else:
