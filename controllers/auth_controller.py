@@ -131,6 +131,7 @@ def api_verify_two_FA_login():
         if otp_in == otp_found:
             Userotp.delete_data(username_in)
             session['otp_valid'] = True
+            print("OTP validated and home url is: ", home_url)
             return redirect(home_url)
         else:
             msg = 'Invalid OTP'
