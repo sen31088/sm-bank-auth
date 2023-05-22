@@ -1,0 +1,236 @@
+{% extends "layout.html" %}
+
+{% block y %}
+<style>
+  .timer {
+  width: 150px;
+  height: 50px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.digits {
+  display: flex;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-left: 300px;
+ 
+}
+
+.minutes,
+.seconds {
+  display: inline-block;
+  padding: 0 5px;
+  border-radius: 3px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 0 2px;
+  text-align: center;
+  min-width: 20px;
+  
+  
+}
+
+
+#timer {
+  font-size: 2em;
+  font-weight: bold;
+  margin-left: 200px;
+
+}
+
+#resend-otp[disabled] {
+  color: grey;
+  cursor: default;
+}
+
+
+/* Define the CSS animation for the button */
+@keyframes toggle-color {
+  from {
+    background-color: blue;
+  }
+  to {
+    background-color: red;
+  }
+}
+
+
+
+
+
+
+/* Define the default button styles */
+
+
+.action1 {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
+}
+ .action1 button {
+  background-color:  #2d3b55;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  margin-left: 80px;
+}
+
+/* Define the CSS animation for the resend button */
+@keyframes toggle-color {
+  from {
+    background-color: blue;
+  }
+  to {
+    background-color: green;
+  }
+}
+
+/* Add the CSS animation to the resend button */
+#resend-otp.toggle {
+  animation: toggle-color 1s linear;
+}
+
+/* Define the CSS styles for the verify button when it is disabled */
+#verify-otp.disabled {
+  background-color: gray;
+  
+  
+}
+
+#resend-otp.disabled {
+  background-color: gray;
+  color: white;
+  
+}
+
+#resend-otp.disabled1 {
+  background-color:gray;
+ 
+}
+
+#verify-otp.disabled1 {
+  background-color: gray;
+ 
+  
+}
+
+
+
+#verify-otp.enabled {
+  background-color:  #2d3b55;
+  
+
+}
+
+#resend-otp.enabled {
+  background-color:  #2d3b55;
+  
+}
+
+
+
+
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="login-form">
+  <form action="{{ app_url }}/api/v1/verify/two-factor-authentication" method="post">
+    {% if otpmsg %}
+      <div align="center" class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{ otpmsg }}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endif %}
+      <img src="/static/sm-logo-blue .png">
+    
+   <div class="content1">
+      <div class="input-field">
+        <div class="input-icons">
+          <br><i class="fa fa-lock icon"></i>
+          </div>
+         
+        <input type="password" name="otp" placeholder="Enter OTP" autocomplete="nope">
+       
+      </div>
+      <p> Enter OTP sent to your mail {{mail_id}}</p>
+    </div>
+    <!-- <button id="resend-otp">Resend OTP</button>
+    <button id="verify-otp">Verify OTP</button> -->
+    <p id="timer">02:00</p>
+  <div class="action1"> 
+     
+
+    <button id="resend-otp" formaction="{{ app_url }}/resend-otp">Resend OTP</button>
+    <button id="verify-otp" formaction="{{ app_url }}/api/v1/verify/two-factor-authentication">Verify OTP</button>
+    
+  </div>
+  <div>
+    
+  </div>
+  </form>
+</div>
+<!-- partial -->
+  
+
+<script>
+  // Get the button elements
+const resendButton = document.getElementById('resend-otp');
+const verifyButton = document.getElementById('verify-otp');
+
+// Set the timer to 2 minutes (120 seconds)
+let timer = 120;
+
+// Define a function to update the timer
+function updateTimer() {
+  if (timer > 0) {
+    timer--;
+    setTimeout(updateTimer, 1000);
+    resendButton.classList.add('disabled');
+    resendButton.disabled = true;
+    //document.getElementById("resend-otp"). = true;
+  } else {
+    // Timer has ended, toggle classes on buttons
+    //resendButton.classList.toggle('toggle');
+    resendButton.classList.add('enabled');
+    resendButton.disabled = false;
+    //verifyButton.classList.add('disabled1');
+    //verifyButton.disabled = true;
+  }
+}
+
+// Call the function to start the timer
+updateTimer();
+
+
+</script>
+
+<script>
+  // Set the initial timer to 2 minutes (in seconds)
+let timerSeconds = 120;
+
+// Update the timer every second
+let timerInterval = setInterval(() => {
+  timerSeconds--;
+  if (timerSeconds <= 0) {
+    // If the timer has elapsed, stop the interval
+    clearInterval(timerInterval);
+  } else {
+    // Update the timer display
+    let minutes = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+    let seconds = (timerSeconds % 60).toString().padStart(2, '0');
+    document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+  }
+}, 1000);
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sm-bank-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sm-bank-auth
+  template:
+    metadata:
+      labels:
+        app: sm-bank-auth
+    spec:
+      containers:
+        - name: sm-bank-auth
+          image: sen31088/sm-bank:{{theversion}}
+          envFrom:
+            - configMapRef:
+                name: sm-bank-config
