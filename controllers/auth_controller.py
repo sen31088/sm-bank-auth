@@ -4,6 +4,8 @@ from models.model_auth import Userlogin, Adminlogin, Userotp
 import logging
 from utils.sendmail import Sendmail
 import random
+from dotenv import  load_dotenv
+import os
 
 #app = flask.Flask(__name__)
 
@@ -11,6 +13,9 @@ logging.basicConfig(filename='user_activity.log', level=logging.INFO, format='%(
 
 auth_ctrl = Blueprint("user_auth", __name__, static_folder='static', template_folder='templates')
 
+load_dotenv()
+app_url = os.getenv("URL")
+home_url = os.getenv("home_svc")
 
 def send_otp(userid_in):
     userid = userid_in
@@ -35,7 +40,7 @@ def login():
     msg = ""
     if session.get('otp') is not None:
        # print(" In Route Login session name is true: ", session.get('username'))
-        return redirect(url_for('home.home'))
+        return redirect(home_url)
     else:
         if request.method=='POST':
             #session["name"] = request.form.get("username")
@@ -95,7 +100,6 @@ def login():
                     return render_template("index.html", loginmsg = msg)    
         return render_template("index.html") 
 
-
 @auth_ctrl.route('/two-factor-authentication' , methods=('GET','POST'))
 def two_FA_login():
         user_session = session.get('name')
@@ -103,7 +107,6 @@ def two_FA_login():
         if not user_session :
           return render_template('index.html')
         else:
-            
             userid_in = session['name']
             userlogin_data = Userlogin.find_data(userid_in)
             email_in = userlogin_data['email']
@@ -128,7 +131,7 @@ def api_verify_two_FA_login():
         if otp_in == otp_found:
             Userotp.delete_data(username_in)
             session['otp_valid'] = True
-            return redirect(url_for('home.home'))
+            return redirect(home_url)
         else:
             msg = 'Invalid OTP'
             return render_template('two-factor-index.html', otpmsg = msg)
