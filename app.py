@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_session import  Session
 import logging
 from controllers.auth_controller import auth_ctrl
@@ -14,6 +14,9 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+      return render_template('page-404.html'), 404
 
 
 @app.after_request
