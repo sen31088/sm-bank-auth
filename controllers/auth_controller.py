@@ -15,7 +15,8 @@ auth_ctrl = Blueprint("user_auth", __name__, static_folder='static', template_fo
 
 load_dotenv()
 app_url = os.getenv("URL")
-home_url = os.getenv("home_svc")
+home_url = app_url + '/home'
+admin_home_url = app_url + '/admin-home'
 
 def send_otp(userid_in):
     userid = userid_in
@@ -147,7 +148,7 @@ def admin_login():
     msg = ""
     if session.get('username') is not None:
         #print(" In Route Login session name is true: ", session.get('username'))
-        return redirect(url_for('home.admin_home'))
+        return redirect(url_for(admin_home_url))
     else:
         if request.method=='POST':
             session["name"] = request.form.get("username")
@@ -167,7 +168,7 @@ def admin_login():
                     user_found.append(a)
                     session["username"] = username_val
                     user_found.append(username_found)
-                    return redirect(url_for('home.admin_home'))
+                    return redirect(url_for(admin_home_url))
                 else:
                     msg = 'Wrong password'
                     #print('error: ',msg)
