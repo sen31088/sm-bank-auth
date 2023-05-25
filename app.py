@@ -2,15 +2,20 @@ from flask import Flask, render_template
 from flask_session import  Session
 import logging
 from controllers.auth_controller import auth_ctrl
+from dotenv import  load_dotenv
+import os
 
 logging.basicConfig(filename='app.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
+load_dotenv()
+redis_connection_string = os.getenv("REDIS_CON")
 app = Flask(__name__)
 app._static_folder = 'static'
 app.config["DEBUG"] = True
 app.secret_key = "super secret key"
 app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
+app.config['SESSION_TYPE'] = 'redis'
+app.config['SESSION_REDIS'] = redis_connection_string
 Session(app)
 
 
