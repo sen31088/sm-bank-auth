@@ -4,18 +4,23 @@ import logging
 from controllers.auth_controller import auth_ctrl
 from dotenv import  load_dotenv
 import os
+import redis
+import secrets
 
 logging.basicConfig(filename='app.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
 load_dotenv()
+secret_key = secrets.token_hex(16)
 redis_connection_string = os.getenv("REDIS_CON")
 app = Flask(__name__)
 app._static_folder = 'static'
 app.config["DEBUG"] = True
-app.secret_key = "super secret key"
-app.config["SESSION_PERMANENT"] = False
+app.secret_key = secret_key
+#app.config['SECRET_KEY'] = secret_key
+#app.config["SESSION_PERMANENT"] = False
+app.config['SESSION_USE_SIGNER'] = True
 app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = redis_connection_string
+app.config['SESSION_REDIS'] = redis.from_url(redis_connection_string)
 Session(app)
 
 
