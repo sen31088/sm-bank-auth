@@ -104,6 +104,8 @@ def login():
 @auth_ctrl.route('/two-factor-authentication' , methods=('GET','POST'))
 def two_FA_login():
         user_session = session.get('name')
+        logging.info(f"{user_session} user_session two-factor-authentication in  found")
+        logging.info(f"{session} Session data is")
         #user_session_otp = session.get('otp_valid')
         if not user_session :
           return render_template('index.html')
