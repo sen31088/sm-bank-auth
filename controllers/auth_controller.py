@@ -127,6 +127,9 @@ def api_verify_two_FA_login():
     if request.method=='POST':
         username_in = session.get('name')
         otp_in = request.form['otp']
+        logging.info(f"{username_in} username_in found")
+        logging.info(f"{otp_in} otp_in found")
+        logging.info(f"{session} Session data is")
         otp_data_found = Userotp.find_otp(username_in)
         logging.info(f"{otp_data_found} OTP data found")
         print("OTP data Found is: ", otp_data_found)
