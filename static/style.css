@@ -59,6 +59,21 @@ body {
   
 }
 
+.page404 {
+  padding: 60px;
+  text-align: left;
+  background-image: url("under-construction.png");
+  color: white;
+  font-size: 30px;
+  padding: 35px 35px 0 35px;
+  height: 400px;
+  width: 700px;
+  font-weight: 300;
+  margin: 10px;
+  margin-left: 450px;
+  margin-top: 150px;
+  border-color: #000000;
+}
 
 
 .login-form {
