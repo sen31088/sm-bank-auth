@@ -16,6 +16,7 @@ app = Flask(__name__)
 app._static_folder = 'static'
 app.config["DEBUG"] = True
 app.secret_key = secret_key
+logging.info(f"{secret_key} Secret key in auth app.py")
 #app.config['SECRET_KEY'] = secret_key
 app.config["SESSION_PERMANENT"] = False
 app.config['SESSION_USE_SIGNER'] = True
