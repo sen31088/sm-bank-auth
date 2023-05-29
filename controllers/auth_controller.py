@@ -104,8 +104,6 @@ def login():
 @auth_ctrl.route('/two-factor-authentication' , methods=('GET','POST'))
 def two_FA_login():
         user_session = session.get('name')
-        logging.info(f"{user_session} user_session two-factor-authentication in  found")
-        logging.info(f"{session} Session data is")
         #user_session_otp = session.get('otp_valid')
         if not user_session :
           return render_template('index.html')
@@ -144,7 +142,7 @@ def admin_login():
     msg = ""
     if session.get('username') is not None:
         #print(" In Route Login session name is true: ", session.get('username'))
-        return redirect(url_for(admin_home_url))
+        return redirect(admin_home_url)
     else:
         if request.method=='POST':
             session["name"] = request.form.get("username")
@@ -164,7 +162,7 @@ def admin_login():
                     user_found.append(a)
                     session["username"] = username_val
                     user_found.append(username_found)
-                    return redirect(url_for(admin_home_url))
+                    return redirect(admin_home_url)
                 else:
                     msg = 'Wrong password'
                     #print('error: ',msg)
