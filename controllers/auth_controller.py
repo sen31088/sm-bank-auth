@@ -184,3 +184,11 @@ def logout():
     logging.info(f"{user_session} logged out sucessfully")
     session.clear()
     return redirect("/")
+
+@auth_ctrl.route("/admin-logout",methods=["POST", "GET"])
+def admin_logout():
+    user_session = session.get('name')
+    session.pop("name", None)
+    logging.info(f"{user_session} logged out sucessfully")
+    session.clear()
+    return redirect("/admin")
